@@ -90,8 +90,6 @@ $VERSION = '3.68';
     %SNMP::Info::MAU::MUNGE,
     %SNMP::Info::LLDP::MUNGE,
     %SNMP::Info::Bridge::MUNGE,
-    # clean up os version string
-    'os_ver' => \&munge_os_ver,
 );
 
 sub layers {
@@ -125,10 +123,12 @@ sub mac {
     return $scalance->b_mac();
 }
 
-sub munge_os_ver {
-    my $version = shift;
-    $version =~ s/^V//;
-    return $version;
+sub os_ver {
+    # clean up os_ver string
+    my $scalance = shift;
+    my $result = $scalance->SUPER::os_ver();
+    $result =~ s/^V//;
+    return $result;
 }
 
 sub i_description {
@@ -271,7 +271,7 @@ extrace a meaningful name from description
 
 use the dot1dBaseBridgeAddress
 
-=item $scalance->munge_os_ver()
+=item $scalance->os_ver()
 
 clean up os_version string
 
