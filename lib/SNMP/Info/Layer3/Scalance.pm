@@ -37,7 +37,7 @@ package SNMP::Info::Layer3::Scalance;
 use strict;
 use warnings;
 use Exporter;
-use SNMP::Info::Layer2;
+use SNMP::Info::Layer3;
 use SNMP::Info::MAU;
 use SNMP::Info::LLDP;
 use SNMP::Info::Bridge;
@@ -45,7 +45,7 @@ use Socket;
 use Data::Dumper;
 
 @SNMP::Info::Layer3::Scalance::ISA = qw/
-    SNMP::Info::Layer2
+    SNMP::Info::Layer3
     SNMP::Info::MAU
     SNMP::Info::Bridge
     SNMP::Info::LLDP
@@ -58,7 +58,7 @@ our ($VERSION, %GLOBALS, %MIBS, %FUNCS, %PORTSTAT, %MODEL_MAP, %MUNGE);
 $VERSION = '3.68';
 
 %MIBS = (
-    %SNMP::Info::Layer2::MIBS,
+    %SNMP::Info::Layer3::MIBS,
     %SNMP::Info::MAU::MIBS,
     %SNMP::Info::LLDP::MIBS,
     %SNMP::Info::Bridge::MIBS,
@@ -67,7 +67,7 @@ $VERSION = '3.68';
 );
 
 %GLOBALS = (
-    %SNMP::Info::Layer2::GLOBALS,
+    %SNMP::Info::Layer3::GLOBALS,
     %SNMP::Info::MAU::GLOBALS,
     %SNMP::Info::LLDP::GLOBALS,    
     %SNMP::Info::Bridge::GLOBALS,    
@@ -78,7 +78,7 @@ $VERSION = '3.68';
 );
 
 %FUNCS = (
-    %SNMP::Info::Layer2::FUNCS,
+    %SNMP::Info::Layer3::FUNCS,
     %SNMP::Info::MAU::FUNCS,
     %SNMP::Info::LLDP::FUNCS,    
     %SNMP::Info::Bridge::FUNCS,    
@@ -86,7 +86,7 @@ $VERSION = '3.68';
 
 %MUNGE = (
     # Inherit all the built in munging
-    %SNMP::Info::Layer2::MUNGE,
+    %SNMP::Info::Layer3::MUNGE,
     %SNMP::Info::MAU::MUNGE,
     %SNMP::Info::LLDP::MUNGE,
     %SNMP::Info::Bridge::MUNGE,
@@ -275,9 +275,9 @@ try to resolve them via DNS and use that
 
 =back
 
-=head2 Globals imported from SNMP::Info::Layer2
+=head2 Globals imported from SNMP::Info::Layer3
 
-See documentation in L<SNMP::Info::Layer2/"GLOBALS"> for details.
+See documentation in L<SNMP::Info::Layer3/"GLOBALS"> for details.
 
 =head2 Globals imported from SNMP::Info::MAU
 
@@ -302,9 +302,9 @@ try to resolve them via DNS and use that.
 
 =back
 
-=head2 Table Methods imported from SNMP::Info::Layer2
+=head2 Table Methods imported from SNMP::Info::Layer3
 
-See documentation in L<SNMP::Info::Layer2/"TABLE METHODS"> for details.
+See documentation in L<SNMP::Info::Layer3/"TABLE METHODS"> for details.
 
 =head2 Table Methods imported from SNMP::Info::MAU
 
