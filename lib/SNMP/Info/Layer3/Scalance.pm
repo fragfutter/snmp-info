@@ -90,8 +90,6 @@ $VERSION = '3.68';
     %SNMP::Info::MAU::MUNGE,
     %SNMP::Info::LLDP::MUNGE,
     %SNMP::Info::Bridge::MUNGE,
-    # shorten interface description
-    'i_description' => \&munge_i_description,
     # clean up os version string
     'os_ver' => \&munge_os_ver,
 );
@@ -133,15 +131,31 @@ sub munge_os_ver {
     return $version;
 }
 
-sub munge_i_description {
-    my $descr = shift;
-    my $short;
-    ($short) = $descr =~ /.*(?:Port, |VLAN, )(.*)$/;
-    if ( ! $short ) {
-        # splitting at VLAN/PORT failed, just the part after the last comma
-        ($short) = $descr =~ /.*, (.*)$/;
+sub i_description {
+    # munge interface descriptions, from
+    #
+    # Siemens, SIMATIC NET, SCALANCE XR524-8C 2PS, 6GK5 524-8GS00-4AR2, 
+    #    HW: Version 1, FW: Version V06.02.02, SERIAL, Ethernet Port, R0/S0/X1 P16
+    #
+    # to
+    #
+    # R0/S0/X1 P16
+
+    my $scalance = shift;
+
+    my $orig = $scalance->SUPER::i_description();
+    my %result;
+    foreach my $iid ( keys %$orig ) {
+        my $descr = $orig->{$iid};
+        my $short;
+        ($short) = $descr =~ /.*(?:Port, |VLAN, )(.*)$/;
+        if ( ! $short ) {
+            # splitting at VLAN/PORT failed, just the part after the last comma
+            ($short) = $descr =~ /.*, (.*)$/;
+        }
+        $result{$iid} = $short;
     }
-    return $short;
+    return \%result;
 }
 
 sub lldp_ip {
@@ -261,7 +275,7 @@ use the dot1dBaseBridgeAddress
 
 clean up os_version string
 
-=item $scalance->munge_i_description()
+=item $scalance->i_description()
 
 siemens returns a description including firmware, switch serial, etc
 clean it up. Try to use anything past VLAN or Port. And if this fails 
@@ -311,3 +325,5 @@ See documentation in L<SNMP::Info::Layer3/"TABLE METHODS"> for details.
 See documentation in L<SNMP::Info::MAU/"TABLE METHODS"> for details.
 
 =cut
+
+# vim: filetype=perl ts=4 sw=4 sta et sts=4 ai
