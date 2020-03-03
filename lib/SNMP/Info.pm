@@ -25,7 +25,7 @@ our
     ($VERSION, %FUNCS, %GLOBALS, %MIBS, %MUNGE, $AUTOLOAD, $INIT, $DEBUG, %SPEED_MAP,
      $NOSUCH, $BIGINT, $REPEATERS);
 
-$VERSION = '3.68';
+$VERSION = '3.70';
 
 =head1 NAME
 
@@ -33,7 +33,7 @@ SNMP::Info - OO Interface to Network devices and MIBs through SNMP
 
 =head1 VERSION
 
-SNMP::Info - Version 3.68
+SNMP::Info - Version 3.70
 
 =head1 AUTHOR
 
@@ -343,6 +343,12 @@ See documentation in L<SNMP::Info::CiscoVTP> for details.
 SNMP Interface for DOCSIS CMTS
 
 See documentation in L<SNMP::Info::DocsisHE> for details.
+
+=item SNMP::Info::DocsisCM
+
+SNMP Interface for DOCSIS Cable Modems
+
+See documentation in L<SNMP::Info::DocsisCM> for details.
 
 =item SNMP::Info::EDP
 
@@ -773,6 +779,12 @@ See documentation in L<SNMP::Info::Layer3::C6500> for details.
 Subclass for CheckPoint devices.
 
 See documentation in L<SNMP::Info::Layer3::CheckPoint> for details.
+
+=item SNMP::Info::Layer3::Ciena
+
+Subclass for Ciena devices.
+
+See documentation in L<SNMP::Info::Layer3::Ciena> for details.
 
 =item SNMP::Info::Layer3::Cisco
 
@@ -1651,43 +1663,44 @@ sub device_type {
     # Hash for generic fallback to a device class if unable to determine using
     # the sysDescr regex.
     my %l3sysoidmap = (
-        9    => 'SNMP::Info::Layer3::Cisco',
-        11   => 'SNMP::Info::Layer2::HP',
-        18   => 'SNMP::Info::Layer3::BayRS',
-        42   => 'SNMP::Info::Layer3::Sun',
-        43   => 'SNMP::Info::Layer2::3Com',
-        45   => 'SNMP::Info::Layer2::Baystack',
-        171  => 'SNMP::Info::Layer3::DLink',
-        244  => 'SNMP::Info::Layer3::Lantronix',
-        311  => 'SNMP::Info::Layer3::Microsoft',
+        9     => 'SNMP::Info::Layer3::Cisco',
+        11    => 'SNMP::Info::Layer2::HP',
+        18    => 'SNMP::Info::Layer3::BayRS',
+        42    => 'SNMP::Info::Layer3::Sun',
+        43    => 'SNMP::Info::Layer2::3Com',
+        45    => 'SNMP::Info::Layer2::Baystack',
+        171   => 'SNMP::Info::Layer3::DLink',
+        244   => 'SNMP::Info::Layer3::Lantronix',
+        311   => 'SNMP::Info::Layer3::Microsoft',
         664   => 'SNMP::Info::Layer2::Adtran',
-        674  => 'SNMP::Info::Layer3::Dell',
-        1588 => 'SNMP::Info::Layer3::Foundry',
-        1872 => 'SNMP::Info::Layer3::AlteonAD',
-        1890 => 'SNMP::Info::Layer3::Redlion',
-        1916 => 'SNMP::Info::Layer3::Extreme',
-        1991 => 'SNMP::Info::Layer3::Foundry',
-        2011 => 'SNMP::Info::Layer3::Huawei',
-        2021 => 'SNMP::Info::Layer3::NetSNMP',
-        2272 => 'SNMP::Info::Layer3::Passport',
-        2620 => 'SNMP::Info::Layer3::CheckPoint',
-        2636 => 'SNMP::Info::Layer3::Juniper',
-        2925 => 'SNMP::Info::Layer1::Cyclades',
-        3076 => 'SNMP::Info::Layer3::Altiga',
-        3224 => 'SNMP::Info::Layer3::Netscreen',
-        3375 => 'SNMP::Info::Layer3::F5',
-        3417 => 'SNMP::Info::Layer3::BlueCoatSG',
-        3717 => 'SNMP::Info::Layer3::Genua',
-        4413 => 'SNMP::Info::Layer2::Ubiquiti',
-        4526 => 'SNMP::Info::Layer2::Netgear',
-        4874 => 'SNMP::Info::Layer3::ERX',
-        5624 => 'SNMP::Info::Layer3::Enterasys',
-        6027 => 'SNMP::Info::Layer3::Force10',
-        6486 => 'SNMP::Info::Layer3::AlcatelLucent',
-        6527 => 'SNMP::Info::Layer3::Timetra',
-        6876 => 'SNMP::Info::Layer3::VMware',
-        8072 => 'SNMP::Info::Layer3::NetSNMP',
-        9303 => 'SNMP::Info::Layer3::PacketFront',
+        674   => 'SNMP::Info::Layer3::Dell',
+        1588  => 'SNMP::Info::Layer3::Foundry',
+        1872  => 'SNMP::Info::Layer3::AlteonAD',
+        1890  => 'SNMP::Info::Layer3::Redlion',
+        1916  => 'SNMP::Info::Layer3::Extreme',
+        1991  => 'SNMP::Info::Layer3::Foundry',
+        2011  => 'SNMP::Info::Layer3::Huawei',
+        2021  => 'SNMP::Info::Layer3::NetSNMP',
+        2272  => 'SNMP::Info::Layer3::Passport',
+        2620  => 'SNMP::Info::Layer3::CheckPoint',
+        2636  => 'SNMP::Info::Layer3::Juniper',
+        2925  => 'SNMP::Info::Layer1::Cyclades',
+        3076  => 'SNMP::Info::Layer3::Altiga',
+        3224  => 'SNMP::Info::Layer3::Netscreen',
+        3375  => 'SNMP::Info::Layer3::F5',
+        3417  => 'SNMP::Info::Layer3::BlueCoatSG',
+        3717  => 'SNMP::Info::Layer3::Genua',
+        4413  => 'SNMP::Info::Layer2::Ubiquiti',
+        4526  => 'SNMP::Info::Layer2::Netgear',
+        4874  => 'SNMP::Info::Layer3::ERX',
+        5624  => 'SNMP::Info::Layer3::Enterasys',
+        6027  => 'SNMP::Info::Layer3::Force10',
+        6141  => 'SNMP::Info::Layer3::Ciena',
+        6486  => 'SNMP::Info::Layer3::AlcatelLucent',
+        6527  => 'SNMP::Info::Layer3::Timetra',
+        6876  => 'SNMP::Info::Layer3::VMware',
+        8072  => 'SNMP::Info::Layer3::NetSNMP',
+        9303  => 'SNMP::Info::Layer3::PacketFront',
         10002 => 'SNMP::Info::Layer2::Ubiquiti',
         10418 => 'SNMP::Info::Layer1::Cyclades',
         12325 => 'SNMP::Info::Layer3::Pf',
@@ -1733,6 +1746,7 @@ sub device_type {
         3375  => 'SNMP::Info::Layer3::F5',
         4526  => 'SNMP::Info::Layer2::Netgear',
         5624  => 'SNMP::Info::Layer3::Enterasys',
+        6141  => 'SNMP::Info::Layer3::Ciena',
         6486  => 'SNMP::Info::Layer3::AlcatelLucent',
         9303  => 'SNMP::Info::Layer3::PacketFront',
         10418 => 'SNMP::Info::Layer1::Cyclades',
@@ -2037,6 +2051,11 @@ sub device_type {
 
         $objtype = 'SNMP::Info::Layer2::ZyXEL_DSLAM'
             if ( $desc =~ /8-port .DSL Module\(Annex .\)/i );
+
+        # Generic DOCSIS Cable Modem override
+        # If sysDesc follows the DOCSIS standard
+        $objtype = 'SNMP::Info::DocsisCM'
+            if ( $desc =~ /<<HW_REV: .*; VENDOR: .*; BOOTR: .*; SW_REV: .*; MODEL: .*>>/i);
 
         # Generic device classification based upon sysObjectID
         if (    ( $objtype eq 'SNMP::Info::Layer2' )
